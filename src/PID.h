@@ -1,8 +1,20 @@
 #ifndef PID_H
 #define PID_H
+#include <vector>
 
 class PID {
 public:
+  double prev_cte;
+  double differential_cte;
+  double integral_cte;
+  std::vector<double> params;
+  std::vector<double> delta_params;
+  std::vector<int> twiddle_stage;
+  double best_error;
+  double curr_error;
+  int frame_count;
+  int param_index;
+  
   /*
   * Errors
   */
