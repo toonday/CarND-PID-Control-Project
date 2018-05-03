@@ -1,19 +1,23 @@
 #ifndef PID_H
 #define PID_H
 #include <vector>
+#include <string>
+#include <fstream>
 
 class PID {
 public:
-  double prev_cte;
-  double differential_cte;
-  double integral_cte;
   std::vector<double> params;
   std::vector<double> delta_params;
   std::vector<int> twiddle_stage;
   double best_error;
   double curr_error;
+  double max_error;
   int frame_count;
   int param_index;
+  bool stop_twiddle;
+  int twiddle_frame_count;
+  std::ofstream log_file;
+  double init_delta_params;
   
   /*
   * Errors
@@ -43,6 +47,11 @@ public:
   * Initialize PID.
   */
   void Init(double Kp, double Ki, double Kd);
+
+  /*
+  * Write to log file.
+  */
+  void LogWrite(std::string s);
 
   /*
   * Update the PID error variables given cross track error.

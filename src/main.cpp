@@ -34,7 +34,8 @@ int main()
 
   PID pid;
   // TODO: Initialize the pid variable.
-  pid.Init(0.1, 0.3, 0.2);
+  pid.Init(0.0, 0.0, 0.0);
+  // pid.Init(0.2, 0.01, 50.0);	// values determined through experimentation
 
   h.onMessage([&pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
@@ -59,16 +60,23 @@ int main()
           * another PID controller to control the speed!
           */
 		  pid.UpdateError(cte);
-		  steer_value = pid.p_error + pid.i_error + pid.d_error;
+		  steer_value = pid.TotalError();
 		  
           // DEBUG
-          std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
+          // std::cout << "CTE: " << cte << " Steering Value: " << steer_value << std::endl;
+          // pid.LogWrite("CTE: " + std::to_string(cte) + " Steering Value: " + std::to_string(steer_value) + "\n");
 
           json msgJson;
           msgJson["steering_angle"] = steer_value;
-          msgJson["throttle"] = 0.08;
+		  
+		  // Could experiment with varying speed based on steering value
+		  // Basically reduce speed as turn angle increases
+		  // Current idea is to use a reduced speed while using the twiddle algorithm to determine the optimal values for the parameters
+		  msgJson["throttle"] = (!pid.stop_twiddle) ? 0.15 : 0.3;
+
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
-          std::cout << msg << std::endl;
+          // // // std::cout << msg << std::endl;
+		  // pid.LogWrite(msg + "\n");
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }
       } else {

@@ -3,15 +3,6 @@
 
 **PID Controller Project**
 
-The goals / steps of this project are the following:
-
-* Perform a Histogram of Oriented Gradients (HOG) feature extraction on a labeled training set of images and train a classifier Linear SVM classifier
-* Optionally, you can also apply a color transform and append binned color features, as well as histograms of color, to your HOG feature vector. 
-* Note: for those first two steps don't forget to normalize your features and randomize a selection for training and testing.
-* Implement a sliding-window technique and use your trained classifier to search for vehicles in images.
-* Run your pipeline on a video stream (start with the test_video.mp4 and later implement on full project_video.mp4) and create a heat map of recurring detections frame by frame to reject outliers and follow detected vehicles.
-* Estimate a bounding box for vehicles detected.
-
 [//]: # (Image References)
 [video1]: ./project_video.mp4
 
@@ -46,5 +37,15 @@ This algorithm helps explore a range of parameter values to determine the optima
 I used it because it was quite simple to program.
 
 However, some approaches like SGD sound interesting since it is an algorithm used for minimizing the loss of a specified loss/cost function
+
+I learnt a bit more while trying to get my twiddle algorithm to work.
+
+The algorithm is simple, but it is dependent on having the right initial values for d_params.
+
+I tweaked the values of the parameters one at a time, noticed the effect they add on controlling the car.
+
+Then I set my initial d_params values based on the anticipated range.
+
+It will be interesting to explore algorithms that don't require some ahead of time knowledge of the probable range. SGD sounds like something to consider here.
 
 Here's a [link to my video result](./project_video.mp4)
